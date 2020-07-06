@@ -1,10 +1,21 @@
-import React, { useState } from 'react';
-import { fetchWeather } from './api/fetchWeather';
+import React, { useState, useEffect } from 'react';
+import { fetchWeather, fetchWeatherByLatLong } from './api/fetchWeather';
 import './App.css';
 
 const App = () => {
   const [query, setQuery] = useState('');
   const [weather, setWeather] = useState({});
+
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(async (position) => {
+      const data = await fetchWeatherByLatLong(
+        position.coords.latitude,
+        position.coords.longitude
+      );
+      setWeather(data);
+      console.log(data);
+    });
+  }, []);
 
   const search = async (e) => {
     if (e.key === 'Enter') {

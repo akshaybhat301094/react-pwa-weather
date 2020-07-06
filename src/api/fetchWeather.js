@@ -14,3 +14,16 @@ export const fetchWeather = async (query) => {
 
   return data;
 };
+
+export const fetchWeatherByLatLong = async (lat, long) => {
+  const { data } = await axios.get(URL, {
+    params: {
+      lat: lat,
+      lon: long,
+      units: 'metric',
+      APPID: API_KEY,
+    },
+  });
+
+  return data;
+};
