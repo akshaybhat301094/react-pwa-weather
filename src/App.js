@@ -7,14 +7,22 @@ const App = () => {
   const [weather, setWeather] = useState({});
 
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition(async (position) => {
-      const data = await fetchWeatherByLatLong(
-        position.coords.latitude,
-        position.coords.longitude
-      );
-      setWeather(data);
-      console.log(data);
-    });
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        // use users location if they accept geolocation
+        const data = await fetchWeatherByLatLong(
+          position.coords.latitude,
+          position.coords.longitude
+        );
+        setWeather(data);
+        console.log(data);
+      },
+      async (error) => {
+        // called in case user does not accept geolocation
+        const data = await fetchWeatherByLatLong(28.7041, 77.1025);
+        setWeather(data);
+      }
+    );
   }, []);
 
   const search = async (e) => {
